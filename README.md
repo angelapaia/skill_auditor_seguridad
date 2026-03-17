@@ -1,57 +1,80 @@
-# Auditoría de Seguridad Maestra (Anti-Vulnerabilidades)
+# 🛡️ Auditoría de Seguridad Maestra (SecOps v2.0)
 
-Bienvenido a la skill **Auditoría de Seguridad Maestra**. Esta skill está diseñada para transformar tu asistente de inteligencia artificial en un **Arquitecto de Seguridad Senior (SecOps)** para tu código. Su enfoque principal es aplicaciones web y móviles.
+Skill que convierte tu asistente de IA en un **Arquitecto de Seguridad Senior (AppSec)** para auditar código antes de cada commit o despliegue a producción.
 
-El objetivo es auditar exhaustivamente tu proyecto antes de cualquier commit o despliegue en producción basándose de forma estricta en el "Estándar de Seguridad Top 10".
+> Basado en el trabajo original de [JefferCB1](https://github.com/JefferCB1/skill_auditor_seguridad).
 
-## 🚀 Instalación y Uso
+---
 
-Instalar esta skill en tu agente es extremadamente simple. Vía `npx`, el instalador obtendrá el contenido de la skill desde este repositorio de GitHub y la inyectará en la carpeta local de configuraciones de skills de tu entorno de IA (`.agent/skills/auditor_seguridad/SKILL.md`).
+## 🚀 Instalación
 
-Ejecuta el siguiente comando en la raíz de tu proyecto:
+Ejecuta este comando en la raíz de tu proyecto:
 
 ```bash
-npx github:JefferCB1/skill_auditor_seguridad
+npx github:angelapaia/skill_auditor_seguridad
 ```
 
-## ⚙️ ¿Cómo activarla?
+El instalador crea automáticamente `.agent/skills/auditor_seguridad/SKILL.md` en tu proyecto con todas las instrucciones para el asistente de IA.
 
-Una vez instalada, interactúa con la Inteligencia Artificial. En cualquier momento de tu flujo de trabajo, invoca la skill usando uno de los siguientes triggers:
+---
 
-- Escribe el comando `@auditar-seguridad`
-- O pídele explícitamente: *"Revisa la seguridad del código"*
+## ⚙️ Cómo activarla
 
-La IA detendrá sus otras tareas y procederá a ejecutar la auditoría de seguridad.
+Una vez instalada, invoca la skill con cualquiera de estos triggers:
 
-## 🛡️ Proceso de Auditoría (El "Estándar Top 10")
+```
+@auditar-seguridad
+```
+```
+Revisa la seguridad del código
+```
 
-Cuando se active, la IA ejecutará los siguientes pasos:
+La IA ejecutará la auditoría completa antes de continuar con otras tareas.
 
-### Paso 1: Escaneo Profundo (Silencioso)
-La IA analizará todos los archivos modificados recientemente o aquellos que tú le indiques, evaluando:
+---
 
-1. **Fugas de Credenciales (Hardcodeadas):** API Keys, contraseñas, URIs de bases de datos.
-2. **Endpoints Expuestos:** Falta de middleware de autenticación (JWT, Supabase, etc.).
-3. **Validación de Inputs:** Vulnerabilidades en los parámetros que llegan a la API o BD sin ser validados por un integrador como Zod/Joi.
-4. **Rate Limiting:** Límites de peticiones en las APIs públicas.
-5. **Manejo Ciego de Errores:** Fallas no manejadas por `try/catch` o fallas silenciosas.
-6. **Prompt Injection:** Si existen integraciones con LLM, separación correcta del input del usuario del System Prompt.
-7. **Riesgo XSS (Cross Site Scripting):** Renderizado directo de HTML en el cliente.
-8. **Permisos Excesivos:** Privilegios "Root" para consultas sencillas en Base de Datos.
-9. **Dependencias Dudosas:** Revisiones de librerías vulnerables o desactualizadas en tu `package.json` o `pubspec.yaml`.
-10. **Fugas en Logs:** Salida de variables sensibles, passwords, o información de correos a través de `console.log` o `print`.
+## 🔍 Los 10 Vectores que Audita
 
-### Paso 2: El Reporte de Auditoría
-La IA solo reportará sus hallazgos, *no corregirá el código automáticamente en esta fase*. Te entregará un reporte estandarizado similar a este:
+| # | Vector | Qué detecta |
+|---|--------|-------------|
+| 1 | **Hardcoding de Secretos** | API Keys, tokens, URIs de BD en texto plano |
+| 2 | **Endpoints Expuestos** | Rutas sin middleware de autenticación |
+| 3 | **Falta de Validación** | Inputs sin Zod/Joi antes de tocar la BD |
+| 4 | **Sin Rate Limiting** | Rutas públicas sin límite de peticiones |
+| 5 | **Errores Silenciosos** | Llamadas externas sin try/catch |
+| 6 | **Prompt Injection** | Input de usuario mezclado con System Prompt |
+| 7 | **XSS** | innerHTML / dangerouslySetInnerHTML sin sanitizar |
+| 8 | **Privilegios Excesivos** | Consultas sin filtro WHERE por usuario |
+| 9 | **Dependencias Riesgosas** | Versiones `*` en librerías de auth/crypto |
+| 10 | **Fuga en Logs** | console.log con objetos de usuario o tokens |
 
-**🛡️ REPORTE DE AUDITORÍA DE SEGURIDAD**
-* **Estado General:** [Aprobado ✅ / Alerta ⚠️ / Crítico 🚨]
+---
 
-| Archivo | Nivel de Riesgo | Regla Violada (1-10) | Descripción del Problema | Solución Sugerida |
-| :--- | :--- | :--- | :--- | :--- |
-| \`auth.js\` | Alto | 1 | Se encontró URI en plano | Pasar URI a variable \`.env\` |
+## 📋 Formato del Reporte
 
-### Paso 3: Corrección Interactiva
-Al finalizar su reporte, la IA te preguntará: *"¿Deseas que aplique las correcciones sugeridas archivo por archivo?"*.
+La skill genera un reporte tabular antes de corregir nada:
 
-Si confirmas, la IA iniciará un proceso cauteloso, arreglando los problemas que encontró, garantizando que el funcionamiento actual del sistema no se rompa tras la reparación.
+```
+🛡️ REPORTE DE AUDITORÍA DE SEGURIDAD
+Estado General: [Aprobado ✅ / Alerta ⚠️ / Crítico 🚨]
+```
+
+| 📄 Archivo | 🚨 Nivel | 🔍 Vector | 🐞 Problema | 🛠️ Solución |
+|---|---|---|---|---|
+| `auth.js` | CRÍTICO | 1 | API Key en texto plano | Mover a `.env` |
+
+Al terminar, la IA pregunta si deseas que aplique las correcciones archivo por archivo.
+
+---
+
+## 🔗 Recursos relacionados
+
+- [Manual de Seguridad para Desarrollo con IA](https://github.com/angelapaia/manual-seguridad-ia) — Los 10 riesgos con ejemplos de código y prompts preventivos
+
+---
+
+## 📄 Licencia
+
+MIT © [angelapaia](https://github.com/angelapaia)
+
+> Skill original creada por [Jefferson CB](https://github.com/JefferCB1). Mantenida y extendida por angelapaia.
