@@ -1,18 +1,43 @@
 {
-  "name": "skill-auditor-seguridad",
+  "name": "skill-seguridad-ia",
   "version": "1.0.0",
-  "description": "Skill de Auditoría de Seguridad para integraciones de IA",
+  "description": "La skill de seguridad más completa para desarrollo con IA. Auditoría de 20 vectores, generación de código seguro, setup de entorno y protocolo de emergencias — todo en un comando.",
   "main": "index.js",
-  "bin": "index.js",
+  "bin": {
+    "skill-seguridad-ia": "./index.js"
+  },
   "scripts": {
     "start": "node index.js"
   },
   "keywords": [
-    "ai",
-    "skill",
     "security",
-    "auditor"
+    "appsec",
+    "ai",
+    "claude",
+    "claude-code",
+    "skill",
+    "owasp",
+    "audit",
+    "nextjs",
+    "supabase",
+    "seguridad",
+    "prompt-injection",
+    "xss",
+    "sql-injection",
+    "rate-limiting",
+    "vulnerability-scanner"
   ],
   "author": "angelapaia",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angelapaia/skill_auditor_seguridad.git"
+  },
+  "homepage": "https://github.com/angelapaia/manual-seguridad-ia",
+  "bugs": {
+    "url": "https://github.com/angelapaia/skill_auditor_seguridad/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
 }
